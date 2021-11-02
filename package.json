@@ -1,0 +1,21 @@
+{
+  "name": "backend-frontend",
+  "version": "0.1.0",
+  "description": "This collection package integrates the server and client for deployment.",
+  "main": "server/app.js",
+  "scripts": {
+    "client": "npm run serve --prefix client",
+    "server": "npm run dev --prefix server",
+    "both": "concurrently \"npm run client\" \"npm run server\"",
+    "postinstall": "npm install --prefix server && npm install --prefix client && npm install --only=dev --prefix client && npm run build --prefix client",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^7.0.0",
+    "prettier": "^2.4.0",
+    "pretty-quick": "^3.1.1"
+  },
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  }
+}

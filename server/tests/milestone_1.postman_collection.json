@@ -1,0 +1,1396 @@
+{
+  "info": {
+    "_postman_id": "de72cec9-3705-42e7-a13e-01bcff7c3748",
+    "name": "milestone_1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "pm.globals.set(\"user_id\", jsonData.user.id)\r",
+                  "pm.globals.set(\"user_username\", jsonData.user.username)\r",
+                  "pm.test(\"Registering a user returns status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "followAuthorizationHeader": false
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"dude@gmail.com\",\r\n    \"username\": \"dude\",\r\n    \"password\" : \"Sifghr1!Sjf#\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/users/register/",
+              "host": ["{{host}}"],
+              "path": ["users", "register", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var data = pm.response.headers.get('Set-Cookie');",
+                  "pm.globals.set(\"signedCookies\", data)",
+                  "pm.test(\"Login return a status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\" : \"dude@gmail.com\",\n    \"password\" : \"Sifghr1!Sjf#\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/users/login",
+              "host": ["{{host}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RefreshToken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"user_cookie\", jsonData.token)",
+                  "pm.test(\"/refreshToken returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "{{signedCookies}}",
+                "type": "text"
+              },
+              {
+                "key": "Origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/users/refreshToken",
+              "host": ["{{host}}"],
+              "path": ["users", "refreshToken"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "var data = pm.response.headers.get('Set-Cookie');",
+                  "pm.globals.set(\"signedCookies\", data)",
+                  "pm.test(\"/me returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_cookie}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/users/me",
+              "host": ["{{host}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "pm.test(\"Registering a user returns status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "followAuthorizationHeader": false
+          },
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\" : \"Coolio Hulio\",\r\n    \"city\": \"cookietown\",\r\n    \"about\" : \"before i started doing tests i was a young man, i am no longer...\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/users/{{user_id}}",
+              "host": ["{{host}}"],
+              "path": ["users", "{{user_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting all users returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/users",
+              "host": ["{{host}}"],
+              "path": ["users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get users profiles",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting all users returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/users",
+              "host": ["{{host}}"],
+              "path": ["users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting a user by id returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/users/{{user_id}}",
+              "host": ["{{host}}"],
+              "path": ["users", "{{user_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user by username",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"geting a user by their username returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "origin",
+                "value": "/",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{host}}/users?username={{user_username}}",
+              "host": ["{{host}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{user_username}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Concept",
+      "item": [
+        {
+          "name": "create concept 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"concept1_id\", jsonData._id)",
+                  "pm.globals.set(\"concept1_name\", jsonData.name)",
+                  "pm.test(\"creating the first concept returns status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"bug\",\n    \"content\": \"im a bug\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/",
+              "host": ["{{host}}"],
+              "path": ["concepts", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create concept 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"concept2_id\", jsonData._id)",
+                  "pm.globals.set(\"concept2_name\", jsonData.name);",
+                  "pm.test(\"creating the second concept returns status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"plane\",\n    \"content\": \"im a plane\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/",
+              "host": ["{{host}}"],
+              "path": ["concepts", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create concept 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"concept3_id\", jsonData._id)",
+                  "pm.test(\"creating the second concept returns status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"boat\",\n    \"content\": \"im a boat\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/",
+              "host": ["{{host}}"],
+              "path": ["concepts", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get collection",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting all concepts returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts",
+              "host": ["{{host}}"],
+              "path": ["concepts"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"finding a concept by id returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts/{{concept2_id}}",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept2_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create comment on first concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"comment1_id\", jsonData._id);",
+                  "pm.test(\"creating a comment on concept 1 returns status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author\": \"{{user_id}}\",\n    \"content\": \"I think that planes are greener then stupid cars\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/{{concept1_id}}/comments/",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept1_id}}", "comments", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create comment on second concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"comment2_id\", jsonData._id);",
+                  "pm.test(\"creating a comment on concept 2 returns status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author\": \"{{user_id}}\",\n    \"content\": \"I think that planes are greener then stupid cars\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/{{concept2_id}}/comments/",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept2_id}}", "comments", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "rewrite comment from first concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"modifing a comment on concept 1 returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author\": \"{{user_id}}\",\n    \"content\": \"I was wrong\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/{{concept1_id}}/comments/{{comment1_id}}",
+              "host": ["{{host}}"],
+              "path": [
+                "concepts",
+                "{{concept1_id}}",
+                "comments",
+                "{{comment1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "rewrite comment from second concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"modifing a comment on concept 2 returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author\": \"{{user_id}}\",\n    \"content\": \"I was wrong\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/{{concept2_id}}/comments/{{comment2_id}}",
+              "host": ["{{host}}"],
+              "path": [
+                "concepts",
+                "{{concept2_id}}",
+                "comments",
+                "{{comment2_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get comment from first concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"get comment by id from concept 1 returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts/{{concept1_id}}/comments/{{comment1_id}}",
+              "host": ["{{host}}"],
+              "path": [
+                "concepts",
+                "{{concept1_id}}",
+                "comments",
+                "{{comment1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find by name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"finding a concept by name returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts?name={{concept1_name}}",
+              "host": ["{{host}}"],
+              "path": ["concepts"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "{{concept1_name}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get comment from second concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"get comment by id from concept 2 returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts/{{concept2_id}}/comments/{{comment2_id}}",
+              "host": ["{{host}}"],
+              "path": [
+                "concepts",
+                "{{concept2_id}}",
+                "comments",
+                "{{comment2_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all comments from first concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting all of concept 1 comments returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts/{{concept1_id}}/comments",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept1_id}}", "comments"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all comments from second concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting all of concept 1 comments returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/concepts/{{concept2_id}}/comments",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept2_id}}", "comments"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change concept 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"modifing the name of concept 3 returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"house\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/{{concept3_id}}",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept3_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "remake concept 3 name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"modifing the name of concept 3 returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n      \"name\": \"house\",\n      \"content\": \"im a house\",\n      \"img\": \"some link\",\n      \"alt\": \"alt\",\n      \"tags\": [\"1\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/concepts/{{concept3_id}}",
+              "host": ["{{host}}"],
+              "path": ["concepts", "{{concept3_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clash",
+      "item": [
+        {
+          "name": "create clash",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "pm.globals.set(\"clash_id\", jsonData._id);\r",
+                  "pm.test(\"creating a clash returns status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"one\": \"{{concept1_id}}\",\n    \"two\": \"{{concept2_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/clashes",
+              "host": ["{{host}}"],
+              "path": ["clashes"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all clashes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting all the clashes returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/clashes",
+              "host": ["{{host}}"],
+              "path": ["clashes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get clashes by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting a clash by id returns a status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get clash by concept ids",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"getting a clash by two concept names returns a status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/clashes?one={{concept1_id}}&two={{concept2_id}}",
+              "host": ["{{host}}"],
+              "path": ["clashes"],
+              "query": [
+                {
+                  "key": "one",
+                  "value": "{{concept1_id}}"
+                },
+                {
+                  "key": "two",
+                  "value": "{{concept2_id}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create comment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.globals.set(\"comment2_id\", jsonData._id);",
+                  "pm.test(\"commenting on a clash retusn status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author\": \"{{user_id}}\",\n    \"content\": \"hello World\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}/comments/",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}", "comments", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "vote on clash",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"voting on clash returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_cookie}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userId\": \"{{user_id}}\",\n    \"vote\": {\n        \"concept\": \"one\",\n        \"type\": 1\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}/votes",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}", "votes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get votes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"get votes on clash returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_cookie}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}/votes",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}", "votes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "modify clash comment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"changing a comment on a clash return status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author\": \"{{user_id}}\",\n    \"content\": \"i am the best\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}/comments/{{comment2_id}}",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}", "comments", "{{comment2_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "modify clash concept",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"changing concept on a clash returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"one\": \"{{concept3_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete clash",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"deleting a user returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/users/{{user_id}}",
+              "host": ["{{host}}"],
+              "path": ["users", "{{user_id}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clean-up",
+      "item": [
+        {
+          "name": "Delete single user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"deleting a clash returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/clashes/{{clash_id}}",
+              "host": ["{{host}}"],
+              "path": ["clashes", "{{clash_id}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Drop the Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"deleting user collection returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/users",
+              "host": ["{{host}}"],
+              "path": ["users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Drop Clash Collection",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"deleting clash collection returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/clashes",
+              "host": ["{{host}}"],
+              "path": ["clashes"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Drop The Base!",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"dropping the database returns status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/dropthebase",
+              "host": ["{{host}}"],
+              "path": ["dropthebase"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "variable_key",
+      "value": ""
+    }
+  ]
+}

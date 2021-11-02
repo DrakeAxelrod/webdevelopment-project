@@ -46,7 +46,7 @@ deploy:
     url: https://$HEROKU_APP_NAME.herokuapp.com/
   only:
     refs:
-      - master
+      - main
     variables:
       - $HEROKU_APP_NAME
       - $HEROKU_API_KEY

@@ -1,5 +1,10 @@
 # Backend and Frontend Template - Software Architecture Group 35
 
+## Contributors
+- [DrakeAxelrod](https://github.com/DrakeAxelrod)
+- [MrJonte](https://github.com/MrJonte)
+- [Axel-J-L](https://github.com/Axel-J-L)
+
 Latest version: https://git.ita.chalmers.se/courses/dit341/group-00-web (public Github [mirror](https://github.com/dit341/group-00-web))
 
 ## Project Structure
